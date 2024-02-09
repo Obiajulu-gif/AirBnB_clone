@@ -50,10 +50,12 @@ class TestBaseModel(unittest.TestCase):
         custom_dict = self.custom_base_model.to_dict()
         self.assertTrue(len(custom_dict.__doc__) > 0)
         self.assertIsInstance(custom_dict, dict)
-        self.assertIn('_id', custom_dict)
-        self.assertIn('_created_at', custom_dict)
-        self.assertIn('_updated_at', custom_dict)
+        self.assertIn('id', custom_dict)
+        self.assertIn('created_at', custom_dict)
+        self.assertIn('updated_at', custom_dict)
         self.assertIn('__class__', custom_dict)
+        self.assertIn('name', custom_dict)
+        self.assertIn('my_number', custom_dict)
         self.assertEqual(custom_dict['__class__'], 'BaseModel')
 
 
