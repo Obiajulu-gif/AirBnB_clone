@@ -55,6 +55,20 @@ class BaseModel:
         """Update update_at with current datetime"""
         self.updated_at = datetime.now()
 
+    def save(self):
+        """Return a updates the public instance attribute
+        updated_at with the current datetime """
+        self.updated_at = datetime.now()
+
+    def to_dict(self):
+        """Return a dictionary representation of the object"""
+        obj_dict = self.__dict__.copy()
+        obj_dict['__class__'] = self.__class__.__name__
+        obj_dict['created_at'] = self.created_at.isoformat()
+        obj_dict['updated_at'] = self.updated_at.isoformat()
+        
+        return obj_dict
+
     def __str__(self):
         return "[{}] ({}) {}".format(self.__class__.__name__,
                                      self.id, self.__dict__)
@@ -62,7 +76,7 @@ class BaseModel:
 
 if __name__ == '__main__':
     base_model = BaseModel()
-    base_model.id = "custom_id"
-    base_model.created_at = datetime(2022, 1, 1)
-    base_model.updated_at = datetime(2022, 1, 2)
-    print(base_model)
+
+    print(base_model.to_dict())
+    base_model.save()
+    print(base_model.to_dict())
