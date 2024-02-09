@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 BaseModel module
 it defines all common attributes/methods for other classes
@@ -73,6 +73,7 @@ class BaseModel:
         return "[{}] ({}) {}".format(self.__class__.__name__,
                                      self.id, self.__dict__)
 
+    
 
 if __name__ == '__main__':
     base_model = BaseModel()
