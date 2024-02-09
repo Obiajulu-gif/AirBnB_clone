@@ -19,10 +19,20 @@ class BaseModel:
         updated_at(datetime):date and time when the object was last updated.
     """
 
-    def __init__(self, id=None, created_at=None, updated_at=None):
-        self.id = id if id else str(uuid.uuid4())
-        self.created_at = created_at if created_at else datetime.now()
-        self.updated_at = updated_at if updated_at else datetime.now()
+    format = "%Y-%m-%dT%H:%M:%S.%f"
+
+    def __init__(self, *args, **kwargs):
+        if kwargs:
+            for key, value in kwargs.items():
+                if key != "__class__":
+                    if key in ["created_at", "updated_at"]:
+                        setattr(self, key, datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
+                    else:
+                        setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def update(self):
         """Update update_at with current datetime"""
@@ -46,13 +56,6 @@ class BaseModel:
         return obj_dict
 
     def __str__(self):
+        """String Representation of the object"""
         return "[{}] ({}) {}".format(self.__class__.__name__,
                                      self.id, self.__dict__)
-
-
-if __name__ == '__main__':
-    base_model = BaseModel()
-
-    print(base_model.to_dict())
-    base_model.save()
-    print(base_model.to_dict())
