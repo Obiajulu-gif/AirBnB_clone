@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-"""Command interpreter module"""
+"""console.py : contains entry point of the command prompt"""
 
 import cmd
-from models.base_model import BaseModel
 from models import storage
-
+from models.user import User
 
 class HBNBCommand(cmd.Cmd):
     """Command interpreter class"""
@@ -16,142 +15,123 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_EOF(self, arg):
-        """EOF command to exit program"""
+        """EOF command to exit the program"""
         print()
         return True
 
     def emptyline(self):
-        """Called when an empty line entered"""
+        """Called when an empty line is entered"""
         pass
 
     def do_create(self, arg):
-        """Create command to create a new instance"""
+        """Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id"""
         if not arg:
             print("** class name missing **")
             return
-        try:
-            obj = eval(arg)()
-            obj.save()
-            print(obj.id)
-        except NameError:
+        arg = arg.split()
+        class_name = arg[0]
+        if class_name not in ["User"]:
             print("** class doesn't exist **")
+            return
+        new_instance = User()
+        new_instance.save()
+        print(new_instance.id)
 
     def do_show(self, arg):
-        """Show command to print string representation of instance"""
+        """Prints the string representation of an instance based on the class name and id"""
         if not arg:
             print("** class name missing **")
             return
-        args = arg.split()
-        try:
-            cls = eval(args[0])
-        except NameError:
+        arg = arg.split()
+        class_name = arg[0]
+        if class_name not in ["User"]:
             print("** class doesn't exist **")
             return
-        if len(args) < 2:
+        if len(arg) < 2:
             print("** instance id missing **")
             return
-        key = "{}.{}".format(args[0], args[1])
-        if key not in storage.all():
+        obj_id = arg[1]
+        key = class_name + "." + obj_id
+        all_objects = storage.all()
+        obj = all_objects.get(key, None)
+        if obj is None:
             print("** no instance found **")
-            return
-        print(storage.all()[key])
+        else:
+            print(obj)
 
     def do_destroy(self, arg):
-        """Destroy command to delete an instance"""
+        """Deletes an instance based on the class name and id"""
         if not arg:
             print("** class name missing **")
             return
-        args = arg.split()
-        try:
-            cls = eval(args[0])
-        except NameError:
+        arg = arg.split()
+        class_name = arg[0]
+        if class_name not in ["User"]:
             print("** class doesn't exist **")
             return
-        if len(args) < 2:
+        if len(arg) < 2:
             print("** instance id missing **")
             return
-        key = "{}.{}".format(args[0], args[1])
-        if key not in storage.all():
+        obj_id = arg[1]
+        key = class_name + "." + obj_id
+        all_objects = storage.all()
+        obj = all_objects.get(key, None)
+        if obj is None:
             print("** no instance found **")
-            return
-        del storage.all()[key]
-        storage.save()
+        else:
+            del all_objects[key]
+            storage.save()
 
     def do_all(self, arg):
-        """All command to print all instances"""
-        if arg:
-            try:
-                cls = eval(arg)
-            except NameError:
+        """Prints all string representation of all instances based or not on the class name"""
+        if not arg:
+            all_objects = storage.all()
+            for obj in all_objects.values():
+                print(obj)
+        else:
+            arg = arg.split()
+            class_name = arg[0]
+            if class_name not in ["User"]:
                 print("** class doesn't exist **")
                 return
-            objs = [str(obj)
-                    for key, obj in storage.all().items()
-                    if arg == key.split('.')[0]]
-        else:
-            objs = [str(obj) for obj in storage.all().values()]
-        print(objs)
+            all_objects = storage.all()
+            filtered_objs = [str(obj) for obj in all_objects.values() if type(obj).__name__ == class_name]
+            print(filtered_objs)
 
     def do_update(self, arg):
-        """Update command to update an instance attribute"""
+        """Updates an instance based on the class name and id by adding or updating attribute"""
         if not arg:
             print("** class name missing **")
             return
-        args = arg.split()
-        try:
-            cls = eval(args[0])
-        except NameError:
+        arg = arg.split()
+        class_name = arg[0]
+        if class_name not in ["User"]:
             print("** class doesn't exist **")
             return
-        if len(args) < 2:
+        if len(arg) < 2:
             print("** instance id missing **")
             return
-        key = "{}.{}".format(args[0], args[1])
-        if key not in storage.all():
+        obj_id = arg[1]
+        key = class_name + "." + obj_id
+        all_objects = storage.all()
+        obj = all_objects.get(key, None)
+        if obj is None:
             print("** no instance found **")
             return
-        if len(args) < 3:
+        if len(arg) < 3:
             print("** attribute name missing **")
             return
-        if len(args) < 4:
+        if len(arg) < 4:
             print("** value missing **")
             return
-        obj = storage.all()[key]
-        setattr(obj, args[2], args[3])
-        storage.save()
-
-    def help_quit(self):
-        """Help message for quit command"""
-        print("Quit command to exit the program")
-
-    def help_EOF(self):
-        """Help message for EOF command"""
-        print("EOF command to exit the program")
-
-    def help_help(self):
-        """Help message for help command"""
-        print("Help command to display available commands")
-
-    def help_create(self):
-        """Help message for create command"""
-        print("Create command to create a new instance")
-
-    def help_show(self):
-        """Help message for show command"""
-        print("Show command to print string representation of instance")
-
-    def help_destroy(self):
-        """Help message for destroy command"""
-        print("Destroy command to delete an instance")
-
-    def help_all(self):
-        """Help message for all command"""
-        print("All command to print all instances")
-
-    def help_update(self):
-        """Help message for update command"""
-        print("Update command to update an instance attribute")
-
+        attr_name = arg[2]
+        attr_value = arg[3]
+        if hasattr(obj, attr_name):
+            attr_value = type(getattr(obj, attr_name))(attr_value)
+            setattr(obj, attr_name, attr_value)
+            storage.save()
+        else:
+            print("** attribute doesn't exist **")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
