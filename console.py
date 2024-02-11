@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """console.py : contains entry point of the command prompt"""
+
+
 import cmd
 
 
