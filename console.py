@@ -23,18 +23,5 @@ class HBNBCommand(cmd.Cmd):
         """Called when an empty line is entered"""
         pass
 
-    def help_quit(self):
-        """Help message for quit command"""
-        print("Quit command to exit the program")
-
-    def help_EOF(self):
-        """Help message for EOF command"""
-        print("EOF command to exit the program")
-
-    def help_help(self):
-        """Help message for help command"""
-        print("Help command to display available commands")
-
-
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
