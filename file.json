@@ -30,5 +30,13 @@
         "id": "789fc9b2-283b-4579-9502-66d890e383c3",
         "name": "Emmanuel",
         "my_number": "09069606647"
+    },
+    "BaseModel.e0d1a08b-5bca-47a4-8779-46c0f13bd975": {
+        "__class__": "BaseModel",
+        "created_at": "2024-02-11T19:13:23.101430",
+        "updated_at": "2024-02-11T19:13:23.101472",
+        "id": "e0d1a08b-5bca-47a4-8779-46c0f13bd975",
+        "name": null,
+        "my_number": null
     }
 }
