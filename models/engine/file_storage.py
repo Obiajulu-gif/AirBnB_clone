@@ -48,6 +48,21 @@ class FileStorage:
             print("File not found")
             return
 
+    def serialize(self):
+        """Serializes objects to JSON"""
+        serialized_objs = {}
+        for key, value in self.__objects.items():
+            serialized_objs[key] = value.to_dict()
+        return serialized_objs
+
+    def deserialize(self, serialized_objs):
+        """Deserializes objects from JSON"""
+        for key, value in serialized_objs.items():
+            class_name = value.get('__class__')
+            if class_name == 'User':
+                self.__objects[key] = User(**value)
+            else:
+                self.__objects[key] = eval(class_name)(**value)
 
 storage = FileStorage()
 storage.reload()

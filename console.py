@@ -4,6 +4,7 @@
 import cmd
 from models import storage
 from models.user import User
+from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
     """Command interpreter class"""
@@ -23,17 +24,17 @@ class HBNBCommand(cmd.Cmd):
         """Called when an empty line is entered"""
         pass
 
-    def do_create(self, arg):
-        """Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id"""
+        def do_create(self, arg):
+            """Creates a new instance of BaseModel, saves it (to the JSON file) and prints the id"""
         if not arg:
             print("** class name missing **")
             return
         arg = arg.split()
         class_name = arg[0]
-        if class_name not in ["User"]:
+        if class_name not in ["BaseModel", "User"]:
             print("** class doesn't exist **")
             return
-        new_instance = User()
+        new_instance = eval(class_name)()
         new_instance.save()
         print(new_instance.id)
 
