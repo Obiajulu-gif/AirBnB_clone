@@ -1,44 +1,38 @@
 #!/usr/bin/python3
-"""
-this is the entry point for the console
-"""
+"""Command interpreter module"""
+
 import cmd
 
 
 class HBNBCommand(cmd.Cmd):
-    """HBNBCommand class"""
+    """Command interpreter class"""
+    
+    prompt = "(hbnb) "
 
-    prompt = '(hbnb) '
-
-    def do_quit(self, args):
+    def do_quit(self, arg):
         """Quit command to exit the program"""
         return True
 
-    def do_EOF(self, args):
-        """Quit command to exit the program"""
+    def do_EOF(self, arg):
+        """EOF command to exit the program"""
         print()
         return True
 
-    def help_quit(self):
-        """Help command to show the help"""
-        print("Quit command to exit the program")
-
-    def help_EOF(self):
-        """Help command to show the help"""
-        print("Quit command to exit the program")
-
-    def help_EOF(self):
-        """Help command to show the help"""
-        print("Quit command to exit the program")
-
-    def do_help(self, arg: str) -> bool | None:
-        """Help command to show the help"""
-        return super().do_help(arg)
-
     def emptyline(self):
-        """Empty line command"""
+        """Called when an empty line is entered"""
         pass
 
+    def help_quit(self):
+        """Help message for quit command"""
+        print("Quit command to exit the program")
+
+    def help_EOF(self):
+        """Help message for EOF command"""
+        print("EOF command to exit the program")
+
+    def help_help(self):
+        """Help message for help command"""
+        print("Help command to display available commands")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
