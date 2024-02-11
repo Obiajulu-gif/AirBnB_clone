@@ -21,7 +21,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def emptyline(self):
-        """Called when an empty line is entered"""
+        """Called when an empty line entered"""
         pass
 
     def do_create(self, arg):
