@@ -64,5 +64,6 @@ class FileStorage:
             else:
                 self.__objects[key] = eval(class_name)(**value)
 
+
 storage = FileStorage()
 storage.reload()
