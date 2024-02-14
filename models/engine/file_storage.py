@@ -40,8 +40,9 @@ class FileStorage:
                 with open(self.__file_path, "r", encoding="UTF-8") as f:
                     serialized_objs = json.load(f)
                     for key, value in serialized_objs.items():
-                        from models.base_model import BaseModel
-                        self.__objects[key] = BaseModel(**value)
+                        class_name = value.get('__class__')
+                        if class_name:
+                            self.__objects[key] = eval(class_name)(**value)
             except (IOError, OSError) as e:
                 print("Error loading from file: {}".format(e))
         else:
