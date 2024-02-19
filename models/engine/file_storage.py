@@ -50,20 +50,17 @@ class FileStorage:
             return
 
     def serialize(self):
-        """Serializes objects to JSON"""
-        serialized_objs = {}
-        for key, value in self.__objects.items():
-            serialized_objs[key] = value.to_dict()
-        return serialized_objs
-
+        """Return the dictionary __objects."""
+        return {key: value.to_dict()
+                for key, value in type(self).__objects.items()}
+    
     def deserialize(self, serialized_objs):
-        """Deserializes objects from JSON"""
+        """Deserializes the JSON file to __objects."""
         for key, value in serialized_objs.items():
             class_name = value.get('__class__')
-            if class_name == 'User':
-                self.__objects[key] = User(**value)
-            else:
+            if class_name:
                 self.__objects[key] = eval(class_name)(**value)
+   
 
 
 storage = FileStorage()

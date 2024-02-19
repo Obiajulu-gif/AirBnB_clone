@@ -2,15 +2,12 @@
 .amenities {
     height: 100%;
     width: 25%;
-    border-right: 1px solid #DDDDDD;
     padding: 0 15px;
     box-sizing: border-box;
-    /* Ensure padding is included in width calculation */
 }
 
 .locations {
-    border-right: none;
-    /* Remove right border for the first left filter */
+    border-right: 1px solid #DDDDDD;
 }
 
 h3 {
@@ -36,9 +33,7 @@ h4 {
     border-radius: 4px;
     font-size: 18px;
     margin-left: auto;
-    /* Push the button to the right */
     margin-right: 15px;
-    /* Add some spacing */
     cursor: pointer;
     transition: opacity 0.3s;
 }
